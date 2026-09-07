@@ -1,5 +1,5 @@
 import type { DBAdapter } from 'better-auth';
-import type { Account, Challenge } from 'connect.js';
+import type { Account, Challenge } from 'connect-protocol';
 import type { RequestRecord, RequestStore, Status } from './engine.js';
 interface Row {
 	requestId: string;

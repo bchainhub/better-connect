@@ -4,7 +4,7 @@ import { ed25519 } from '@noble/curves/ed25519.js';
 import { StrKey } from '@stellar/stellar-sdk';
 import * as cose from '@emurgo/cardano-message-signing-nodejs';
 import { bech32 } from '@scure/base';
-import { chains, requirementsFor, canonicalMessage } from 'connect.js';
+import { chains, requirementsFor, canonicalMessage } from 'connect-protocol';
 import {
 	ProfileRegistry,
 	stellarMessageHash,

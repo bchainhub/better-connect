@@ -1,6 +1,6 @@
 {
 	"name": "better-connect",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Multi-chain Connect authentication for Better Auth",
 	"type": "module",
 	"license": "SEE LICENSE IN LICENSE",
@@ -63,7 +63,7 @@
 	},
 	"dependencies": {
 		"@better-fetch/fetch": "^1.3.1",
-		"connect.js": "file:vendor/connect.js-0.1.0.tgz",
+		"connect-protocol": "file:vendor/connect-protocol-0.1.1.tgz",
 		"zod": "^4.0.0",
 		"monero-ts": "^0.11.15"
 	},
@@ -71,7 +71,7 @@
 		"better-auth": "^1.7.0"
 	},
 	"bundleDependencies": [
-		"connect.js",
+		"connect-protocol",
 		"monero-ts"
 	],
 	"overrides": {

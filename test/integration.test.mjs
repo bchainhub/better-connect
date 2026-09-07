@@ -158,7 +158,7 @@ test('Better Auth client plugin routes and concurrent first-time wallet mapping'
 
 test('offline wallet handoff creates a verified Better Auth session through the portal', async () => {
 	const { createBetterConnectHandoff } = await import('../dist/client.js');
-	const { parseConnectHandoff } = await import('connect.js');
+	const { parseConnectHandoff } = await import('connect-protocol');
 	const { auth, database, call } = await makeAuth();
 	try {
 		let approvals = 0;

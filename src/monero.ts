@@ -1,4 +1,8 @@
-import { defineSigningProfile, chains, canonicalMessage } from 'connect.js';
+import {
+	defineSigningProfile,
+	chains,
+	canonicalMessage,
+} from 'connect-protocol';
 export const moneroProfile = defineSigningProfile({
 	id: 'monero-spend-v2',
 	namespace: 'monero',

@@ -9,7 +9,7 @@ import * as ripple from 'ripple-keypairs';
 import bitcoinMessage from 'bitcoinjs-message';
 import { Trx, TronWeb } from 'tronweb';
 import { encode } from 'cborg';
-import { accountFor, canonicalMessage } from 'connect.js';
+import { accountFor, canonicalMessage } from 'connect-protocol';
 import { signer } from './helpers.mjs';
 const hex = (b) => Buffer.from(b).toString('hex');
 const wallets = new Map();

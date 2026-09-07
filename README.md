@@ -1,6 +1,6 @@
 # Better Connect
 
-Connect v1 multi-chain authentication for Better Auth. This package owns the backend request engine, HTTP endpoints, storage, users and sessions. It reuses signature profiles from the browser-only connect.js package and supplies its own Node Monero verifier.
+Connect v1 multi-chain authentication for Better Auth. This package owns the backend request engine, HTTP endpoints, storage, users and sessions. It reuses signature profiles from the browser-only connect-protocol package and supplies its own Node Monero verifier.
 
 A wallet proves control of its account and approves a pending request. The initiating browser redeems that approval with its private redemption secret to receive a fresh Better Auth session. The secret stays with that browser and never enters the wallet QR.
 
@@ -19,7 +19,7 @@ Apply Better Auth migrations for the plugin's request and wallet-identity schema
 ```ts
 import { createAuthClient } from 'better-auth/client';
 import { betterConnectClient, createBetterConnectHandoff } from 'better-connect/client';
-import { receiveBluetoothResponse } from 'connect.js';
+import { receiveBluetoothResponse } from 'connect-protocol';
 
 const client = createAuthClient({ plugins: [betterConnectClient()] });
 const handoff = await createBetterConnectHandoff({
@@ -46,7 +46,7 @@ const session = await handoff.accept(packet);
 
 The wallet handles the embedded challenge and returns its encrypted signature without contacting Better Auth. The portal delivers that proof to the server for verification, then redeems approval. Any host-provided channel can return the packet. Completing a Better Auth session requires a reachable server. See [nearby/offline transport](docs/NEARBY.md).
 
-Short-URI HTTP endpoints remain available for existing integrations. connect.js remains browser-only.
+Short-URI HTTP endpoints remain available for existing integrations. connect-protocol remains browser-only.
 
 Built-in proof schemes cover Core Blockchain, Ethereum, Polygon, Base, Bitcoin, Solana, BNB Smart Chain, TRON, Monero, Stellar, Litecoin, XRP, Zcash and Cardano. See [chain methods and supported addresses](docs/CHAINS.md). Use `ProfileRegistry` and `defineSigningProfile` to extend verification. `MemoryRequestStore` is available for tests or single-process development; production adapters must implement atomic conditional transitions.
 
@@ -61,6 +61,8 @@ npm run test:package
 node scripts/flutter-interop.mjs ../flutter_connect
 ```
 
-The package bundles connect.js and its own patched Node Monero dependency so consumers do not need local source checkouts. Shared fixtures and live Dart integration cover all seventeen proof variants. Generated vendor archives and dependency lockfiles are ignored. See [release setup](docs/RELEASE.md).
+The package bundles connect-protocol and its own patched Node Monero dependency so consumers do not need local source checkouts. Shared fixtures and live Dart integration cover all seventeen proof variants. Generated vendor archives and dependency lockfiles are ignored. See [release setup](docs/RELEASE.md).
 
 Licensed under [CORE License](LICENSE).
+
+This package is distributed under the [CORE License](LICENSE). It is not an OSI-approved license.
