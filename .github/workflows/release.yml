@@ -1,7 +1,7 @@
 name: Release
 on:
-  push:
-    tags: ['[0-9]*.[0-9]*.[0-9]*']
+  release:
+    types: [published]
 permissions:
   contents: read
 jobs:
@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
-      contents: write
+      contents: read
       id-token: write
     steps:
       - uses: actions/checkout@v4
@@ -24,17 +24,20 @@ jobs:
           registry-url: https://registry.npmjs.org
           cache: npm
           cache-dependency-path: package.json
+      - name: Resolve pinned SDK revision
+        id: sdk
+        run: echo "ref=$(node scripts/prepare-sdk.mjs --ref)" >> "$GITHUB_OUTPUT"
       - uses: actions/checkout@v4
         with:
           repository: bchainhub/connect.js
+          ref: ${{ steps.sdk.outputs.ref }}
           path: .connect-sdk
       - run: node scripts/prepare-sdk.mjs .connect-sdk
       - run: npm install --package-lock=false
       - name: Verify tag matches package version
-        run: node -e 'if (process.env.GITHUB_REF_NAME !== JSON.parse(require("fs").readFileSync("package.json")).version) process.exit(1)'
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: node -e 'if (process.env.RELEASE_TAG !== JSON.parse(require("fs").readFileSync("package.json")).version) process.exit(1)'
       - run: npm run build
       - run: npm install -g npm@latest
       - run: npm publish --provenance --access public
-      - run: gh release create "$GITHUB_REF_NAME" --verify-tag --generate-notes
-        env:
-          GH_TOKEN: ${{ github.token }}

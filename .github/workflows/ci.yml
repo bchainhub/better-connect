@@ -20,9 +20,13 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: npm
           cache-dependency-path: package.json
+      - name: Resolve pinned SDK revision
+        id: sdk
+        run: echo "ref=$(node scripts/prepare-sdk.mjs --ref)" >> "$GITHUB_OUTPUT"
       - uses: actions/checkout@v4
         with:
           repository: bchainhub/connect.js
+          ref: ${{ steps.sdk.outputs.ref }}
           path: .connect-sdk
       - run: node scripts/prepare-sdk.mjs .connect-sdk
       - run: npm install --package-lock=false

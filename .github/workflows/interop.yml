@@ -19,13 +19,18 @@ jobs:
         with:
           repository: bchainhub/flutter_connect
           path: flutter_connect
-      - uses: actions/checkout@v4
-        with:
-          repository: bchainhub/connect.js
-          path: connect.js
       - uses: actions/setup-node@v4
         with:
           node-version: 24
+      - name: Resolve pinned SDK revision
+        id: sdk
+        run: echo "ref=$(node scripts/prepare-sdk.mjs --ref)" >> "$GITHUB_OUTPUT"
+        working-directory: better-connect
+      - uses: actions/checkout@v4
+        with:
+          repository: bchainhub/connect.js
+          ref: ${{ steps.sdk.outputs.ref }}
+          path: connect.js
       - uses: subosito/flutter-action@v2
         with:
           channel: stable

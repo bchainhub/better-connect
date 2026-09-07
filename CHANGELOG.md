@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.2
+
+- Publish npm when a GitHub Release is published in the app.
+- Remove duplicate GitHub Release creation from the publishing workflow.
+- Keep the verified connect-protocol 0.1.1 source pin independent of the plugin release version.
+
 ## 0.1.1
 
 - Update the bundled connect-protocol SDK to 0.1.1.
