@@ -1,5 +1,5 @@
 // Test-only host-wallet bridge. Never load deterministic test keys in an app.
-import { allChains } from 'connect.js';
+import { allChains } from 'connect-protocol';
 import { chainSigner, closeWallets } from '../test/multichain-helpers.mjs';
 const [profile, reference, messageHex] = process.argv.slice(2);
 try {

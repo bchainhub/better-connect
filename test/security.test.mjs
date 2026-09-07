@@ -5,7 +5,7 @@ import {
 	MemoryRequestStore,
 	ProfileRegistry,
 } from '../dist/index.js';
-import { canonicalMessage, ConnectClient } from 'connect.js';
+import { canonicalMessage, ConnectClient } from 'connect-protocol';
 import { requirements, signer, fixtureChallenge, now } from './helpers.mjs';
 const setup = () => {
 	let time = Date.now();

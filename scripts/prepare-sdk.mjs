@@ -15,7 +15,7 @@ export function prepareSdk(
 		readFileSync(resolve(sdk, 'package.json'), 'utf8'),
 	);
 	const archive = `${sdkManifest.name}-${sdkManifest.version}.tgz`;
-	if (manifest.dependencies['connect.js'] !== `file:vendor/${archive}`) {
+	if (manifest.dependencies['connect-protocol'] !== `file:vendor/${archive}`) {
 		throw Error('The SDK checkout version must match the plugin dependency.');
 	}
 	const fixture = 'test/fixtures/conformance.json';

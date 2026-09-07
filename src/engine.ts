@@ -12,7 +12,7 @@ import {
 	type Challenge,
 	type Requirement,
 	type ChainDefinition,
-} from 'connect.js';
+} from 'connect-protocol';
 import { ProfileRegistry } from './profiles.js';
 export type Status = 'PENDING' | 'APPROVED' | 'CONSUMED' | 'DENIED' | 'EXPIRED';
 export interface RequestRecord {

@@ -9,7 +9,7 @@ import {
 	proofSchema,
 	type Requirement,
 	type ChainDefinition,
-} from 'connect.js';
+} from 'connect-protocol';
 import { ConnectEngine, type RequestStore } from './engine.js';
 import { AdapterRequestStore, connectSchema } from './store.js';
 import { ProfileRegistry } from './profiles.js';
@@ -22,7 +22,7 @@ export {
 	defineChain,
 	evmChain,
 	requirementsFor,
-} from 'connect.js';
+} from 'connect-protocol';
 export * from './store.js';
 export interface BetterConnectOptions {
 	origin: string;

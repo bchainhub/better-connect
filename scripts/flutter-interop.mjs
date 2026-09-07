@@ -5,7 +5,7 @@ import { betterAuth } from 'better-auth';
 import { getMigrations } from 'better-auth/db/migration';
 import { betterConnect } from '../dist/index.js';
 import { requirements as originalRequirements } from '../test/helpers.mjs';
-import { allChains, requirementsFor } from 'connect.js';
+import { allChains, requirementsFor } from 'connect-protocol';
 const requirements = [...requirementsFor(allChains), originalRequirements[1]];
 const database = new Database(':memory:');
 const options = {

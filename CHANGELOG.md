@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.1
+
+- Update the bundled connect-protocol SDK to 0.1.1.
+- Retain the CORE License.
+
 ## 0.1.0
 
 - Add Connect v1 authentication endpoints, atomic request state transitions, wallet identities and ordinary Better Auth session cookies.

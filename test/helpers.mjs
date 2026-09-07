@@ -2,7 +2,7 @@ import { ed448 } from '@noble/curves/ed448.js';
 import { ed25519 } from '@noble/curves/ed25519.js';
 import { privateKeyToAccount } from 'viem/accounts';
 import { Signer } from 'bip322-js';
-import { canonicalMessage } from 'connect.js';
+import { canonicalMessage } from 'connect-protocol';
 import { xcbAddress } from '../dist/index.js';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);

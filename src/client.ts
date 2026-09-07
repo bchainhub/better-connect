@@ -3,7 +3,7 @@ import {
 	ConnectError,
 	type Challenge,
 	type Proof,
-} from 'connect.js';
+} from 'connect-protocol';
 import type { BetterAuthClientPlugin } from 'better-auth/client';
 import type { betterConnect } from './index.js';
 export function betterConnectClient() {

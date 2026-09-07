@@ -15,4 +15,4 @@ References: [npm trusted publishing](https://docs.npmjs.com/trusted-publishers/)
 
 Dependency lockfiles are ignored. npm workflows install from package.json with `--package-lock=false`; npm cache keys use package.json. Flutter workflows already resolve dependencies with `flutter pub get`.
 
-The plugin bundles connect.js, which includes its offline Monero verifier with patched transitive dependencies. `npm run test:package` packs and installs a clean consumer application, verifies all seventeen shared proofs, checks the bundled dependency versions and audits production dependencies. CI runs this check on Node 22 and 24 before release.
+The plugin bundles connect-protocol, which includes its offline Monero verifier with patched transitive dependencies. `npm run test:package` packs and installs a clean consumer application, verifies all seventeen shared proofs, checks the bundled dependency versions and audits production dependencies. CI runs this check on Node 22 and 24 before release.

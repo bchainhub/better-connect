@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { ProfileRegistry, xcbAddress } from '../dist/index.js';
 import { ed448 } from '@noble/curves/ed448.js';
-import { canonicalMessage } from 'connect.js';
+import { canonicalMessage } from 'connect-protocol';
 for (const vector of JSON.parse(
 	readFileSync(new URL('./fixtures/conformance.json', import.meta.url)),
 )) {

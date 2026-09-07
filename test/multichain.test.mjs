@@ -8,7 +8,7 @@ import {
 	ConnectClient,
 	evmChain,
 	accountFor,
-} from 'connect.js';
+} from 'connect-protocol';
 import {
 	ConnectEngine,
 	MemoryRequestStore,
