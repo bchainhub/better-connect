@@ -16,3 +16,9 @@ References: [npm trusted publishing](https://docs.npmjs.com/trusted-publishers/)
 Dependency lockfiles are ignored. npm workflows install from package.json with `--package-lock=false`; npm cache keys use package.json. Flutter workflows already resolve dependencies with `flutter pub get`.
 
 The plugin bundles connect-protocol, which includes its offline Monero verifier with patched transitive dependencies. `npm run test:package` packs and installs a clean consumer application, verifies all seventeen shared proofs, checks the bundled dependency versions and audits production dependencies. CI runs this check on Node 22 and 24 before release.
+
+## SDK source revision
+
+`sdk-source.json` pins the Connect SDK repository, full commit SHA, npm package name and version. CI, Flutter interoperability and release publishing all resolve that pin before checking out the SDK. They never build whichever version happens to be on the SDK default branch.
+
+When updating `dependencies.connect-protocol`, also update `sdk-source.json` to a pushed SDK commit whose package name/version match the archive dependency. Merge or push the SDK commit before running better-connect CI. Tags need not exist yet. `node scripts/prepare-sdk.mjs --ref` validates the configuration and prints the pinned SHA without installing dependencies. Local SDK preparation still allows an explicitly supplied checkout, but validates its name/version and shared fixtures; mismatches report both expected and actual versions.
