@@ -1,0 +1,39 @@
+name: Flutter interoperability
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_call:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  interop:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: better-connect
+      - uses: actions/checkout@v4
+        with:
+          repository: bchainhub/flutter_connect
+          path: flutter_connect
+      - uses: actions/checkout@v4
+        with:
+          repository: bchainhub/connect.js
+          path: connect.js
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: node scripts/prepare-sdk.mjs && npm install --package-lock=false && npm run build
+        working-directory: better-connect
+      - run: flutter pub get
+        working-directory: flutter_connect
+      - run: cmp better-connect/test/fixtures/conformance.json flutter_connect/test/fixtures/conformance.json
+      - run: node scripts/flutter-interop.mjs
+        working-directory: better-connect
