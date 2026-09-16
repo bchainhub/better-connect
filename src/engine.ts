@@ -1,3 +1,4 @@
+import { validateWalletAccount } from './wallet-validation.js';
 import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
 import {
 	ConnectError,
@@ -182,6 +183,7 @@ export class ConnectEngine {
 			!compatible(c, proof) ||
 			p.alg !== proof.alg ||
 			p.namespace !== proof.account.namespace ||
+			validateWalletAccount(proof.account).status === 'invalid' ||
 			!p.validateAccount(proof.account)
 		)
 			throw new ConnectError('unsupportedAccount');
