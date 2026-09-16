@@ -211,3 +211,5 @@ export function betterConnect(options: BetterConnectOptions) {
 		},
 	} satisfies BetterAuthPlugin;
 }
+
+export * from './wallet-validation.js';

@@ -66,3 +66,7 @@ The package bundles connect-protocol and its own patched Node Monero dependency 
 Licensed under [CORE License](LICENSE).
 
 This package is distributed under the [CORE License](LICENSE). It is not an OSI-approved license.
+
+## Wallet address validation
+
+`validateWalletAccount` checks addresses against an explicit Connect namespace/reference and returns `valid`, `invalid`, or `unsupported`. `isValidWalletAccount` accepts only `valid`. These checks supplement wallet ownership verification. See [coverage, adapter integration and package compatibility](docs/WALLET_VALIDATION.md).
