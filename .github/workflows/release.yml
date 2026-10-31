@@ -22,6 +22,9 @@ jobs:
           registry-url: https://registry.npmjs.org
           cache: npm
           cache-dependency-path: package.json
+      - name: Remove obsolete npm authentication setting
+        run: |
+          node -e 'const fs = require("node:fs"); const p = process.env.NPM_CONFIG_USERCONFIG; if (p && fs.existsSync(p)) fs.writeFileSync(p, fs.readFileSync(p, "utf8").replace(/^always-auth\s*=.*\r?\n?/gm, ""));'
       - run: npm install --package-lock=false
       - name: Verify tag matches package version
         env:

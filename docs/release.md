@@ -21,11 +21,12 @@ References: [npm trusted publishing](https://docs.npmjs.com/trusted-publishers/)
 
 Dependency lockfiles are ignored. npm workflows install from package.json with `--package-lock=false`; npm cache keys use package.json. Flutter workflows already resolve dependencies with `flutter pub get`.
 
-The plugin bundles patched Node Monero, BIP-322 and TRON dependencies. Package checks install
+The plugin bundles Node Monero and BIP-322 dependencies. CI upgrades npm before package validation so its publish checks match release npm.
+Package checks include a publish dry-run and install
 the tarball in a clean application, verify all seventeen proofs, assert that
 connect-protocol is absent, and audit runtime dependencies. The BIP-322 dependency uses
 bitcoinjs-lib 7.0.1 because later versions reject its synthetic signing transaction;
-the overridden version is bundled so consumer installation preserves compatibility.
+that version is a direct dependency and bundled so consumer installation preserves compatibility. No override modifies a bundled dependency.
 
 ## Independent releases
 

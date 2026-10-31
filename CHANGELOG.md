@@ -2,6 +2,9 @@
 
 ## 0.2.0
 
+- Fix npm 12 publishing by removing overrides from bundled runtime dependencies; declare the compatible Bitcoin dependency directly and verify TRON messages without the TronWeb runtime.
+- Validate a publish dry-run with release npm in CI and remove obsolete always-auth configuration.
+
 - Refresh dependencies and maintain authentication schemas, canonical messages and verification profiles within this package.
 - Remove the connect-protocol dependency, Git source pinning, SDK vendoring and checkout requirements; retain fixture and live Flutter interoperability checks.
 - Retain the authentication-only plugin surface.
