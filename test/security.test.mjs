@@ -5,7 +5,7 @@ import {
 	MemoryRequestStore,
 	ProfileRegistry,
 } from '../dist/index.js';
-import { canonicalMessage, ConnectClient } from 'connect-protocol';
+import { canonicalMessage, parseConnectUri } from '../dist/protocol/index.js';
 import { requirements, signer, fixtureChallenge, now } from './helpers.mjs';
 const setup = () => {
 	let time = Date.now();
@@ -121,21 +121,15 @@ test('pending/approved expiration, denied states, unknown request and secret sep
 	await assert.rejects(engine.challenge('e'.repeat(64)));
 	await assert.rejects(engine.challenge(c.requestId + '\n'));
 });
-test('TS wallet completes QR approval and separate desktop redemption', async () => {
+test('canonical wallet proof completes approval and separate desktop redemption', async () => {
 	const { engine } = setup(),
 		created = await engine.create(),
 		account = signer('xcb-ed448');
-	const client = new ConnectClient(
-		{ getAccounts: async () => [account] },
-		{
-			challenge: (t) => engine.challenge(t.requestId),
-			approve: (_, p) => engine.approve(p),
-		},
-	);
-	const request = await client.resolve(created.connectUri);
-	assert.equal(request.state, 'awaitingUserApproval');
-	await request.approve(request.accounts[0]);
-	assert.equal(request.state, 'approved');
+	const target = parseConnectUri(created.connectUri);
+	const challenge = await engine.challenge(target.requestId);
+	assert.equal((await engine.status(created.requestId)).status, 'PENDING');
+	await engine.approve(await account.proof(challenge));
+	assert.equal((await engine.status(created.requestId)).status, 'APPROVED');
 	assert.deepEqual(
 		await engine.redeem(created.requestId, created.redeemSecret),
 		account.account,

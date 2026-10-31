@@ -1,9 +1,9 @@
+import { ConnectHandoff } from './handoff.js';
 import {
-	ConnectHandoff,
 	ConnectError,
 	type Challenge,
 	type Proof,
-} from 'connect-protocol';
+} from './protocol/protocol.js';
 import type { BetterAuthClientPlugin } from 'better-auth/client';
 import type { betterConnect } from './index.js';
 export function betterConnectClient() {

@@ -1,6 +1,10 @@
 import { writeFileSync } from 'node:fs';
 import { signer, requirements, fixtureChallenge } from '../test/helpers.mjs';
-import { canonicalMessage, allChains, requirementsFor } from 'connect-protocol';
+import {
+	canonicalMessage,
+	allChains,
+	requirementsFor,
+} from '../dist/protocol/index.js';
 import { chainSigner, closeWallets } from '../test/multichain-helpers.mjs';
 const challenge = fixtureChallenge();
 const vectors = [];

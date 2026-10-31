@@ -7,10 +7,8 @@ permissions:
 jobs:
   validate:
     uses: ./.github/workflows/ci.yml
-  interop:
-    uses: ./.github/workflows/interop.yml
   publish:
-    needs: [validate, interop]
+    needs: [validate]
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -24,15 +22,6 @@ jobs:
           registry-url: https://registry.npmjs.org
           cache: npm
           cache-dependency-path: package.json
-      - name: Resolve pinned SDK revision
-        id: sdk
-        run: echo "ref=$(node scripts/prepare-sdk.mjs --ref)" >> "$GITHUB_OUTPUT"
-      - uses: actions/checkout@v4
-        with:
-          repository: bchainhub/connect.js
-          ref: ${{ steps.sdk.outputs.ref }}
-          path: .connect-sdk
-      - run: node scripts/prepare-sdk.mjs .connect-sdk
       - run: npm install --package-lock=false
       - name: Verify tag matches package version
         env:

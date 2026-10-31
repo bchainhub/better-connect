@@ -28,7 +28,7 @@ Signing method availability depends on the host wallet. These are protocol adapt
 ## TypeScript wallet
 
 ```ts
-import { chains, walletAccount } from 'connect-protocol';
+import { chains, walletAccount } from 'better-connect';
 
 const account = walletAccount(chains.solana, address, async bytes => {
   const result = await wallet.signMessage(bytes);
@@ -88,4 +88,4 @@ Monero verification lazily loads monero-project WASM through monero-ts, operates
 - [Litecoin signed messages](https://github.com/litecoin-project/litecoin/blob/master/src/util/message.cpp), [Zcash message magic](https://github.com/zcash/zcash/blob/master/src/main.cpp), [Zcash address versions and genesis](https://github.com/zcash/zcash/blob/master/src/chainparams.cpp).
 - [CAIP namespaces](https://namespaces.chainagnostic.org/), [Base chain ID](https://docs.base.org/base-chain/api-reference/ethereum-json-rpc-api/eth_chainId), [Polygon chain ID](https://docs.polygon.technology/wallets/wallet-operations), [BNB configuration](https://docs.bnbchain.org/bnb-smart-chain/developers/wallet-configuration/).
 
-The main `connect-protocol` import provides browser-only challenge creation and verification. `connect-protocol/verification` exposes signature profiles, and `connect-protocol/wallet` exposes wallet discovery and adapters. better-connect owns its backend engine, HTTP endpoints and session storage. connect-protocol has no server or dapp entry point.
+The main `connect-protocol` import provides browser-only challenge creation and verification. `connect-protocol/verification` exposes signature profiles, and `connect-protocol/wallet` exposes wallet discovery and adapters. better-connect independently owns its authentication schemas, verification profiles, backend engine, HTTP endpoints and session storage; it does not import or bundle connect-protocol. connect-protocol has no server or dapp entry point.
