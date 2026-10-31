@@ -1,4 +1,4 @@
-import { mkdtemp, writeFile, rm } from 'node:fs/promises';
+import { mkdtemp, writeFile, rm, readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
@@ -10,7 +10,21 @@ const run = (args, cwd = process.cwd()) =>
 		maxBuffer: 16 * 1024 * 1024,
 		stdio: ['ignore', 'pipe', 'inherit'],
 	});
+function assertStandalone(manifest) {
+	for (const section of [
+		'dependencies',
+		'devDependencies',
+		'peerDependencies',
+	]) {
+		if (manifest[section]?.['connect-protocol'])
+			throw Error('Unexpected SDK dependency');
+	}
+}
 try {
+	const manifest = JSON.parse(
+		await readFile(new URL('../package.json', import.meta.url), 'utf8'),
+	);
+	assertStandalone(manifest);
 	const [packed] = JSON.parse(
 		run(['pack', '--json', '--pack-destination', directory]),
 	);
@@ -36,13 +50,16 @@ try {
  import {createRequire} from 'node:module';
  import {ProfileRegistry,allChains} from 'better-connect';
  const require=createRequire(import.meta.resolve('better-connect'));
+ assert.throws(()=>require.resolve('connect-protocol'), {code:'MODULE_NOT_FOUND'});
+ const bipRequire=createRequire(require.resolve('bip322-js'));
+ assert.ok(bipRequire.resolve('bitcoinjs-lib')); // Fixtures above check the bundled BIP-322 implementation.
  const vectors=JSON.parse(readFileSync(new URL('../test/fixtures/conformance.json', import.meta.resolve('better-connect'))));
  assert.equal(allChains.length,16);
  for(const v of vectors) assert.deepEqual(await new ProfileRegistry().get(v.proof.profile).verify(v.challenge,v.proof),v.proof.account);
- const moneroRequire=createRequire(require.resolve('monero-ts'));
- assert.equal(JSON.parse(readFileSync(moneroRequire.resolve('serialize-javascript/package.json'))).version.split('.')[0],'7');
- assert.equal(JSON.parse(readFileSync(moneroRequire.resolve('uuid/package.json'))).version.split('.')[0],'11');
- console.log('Installed package verified all '+vectors.length+' fixtures and patched Monero dependencies.');
+ const moneroManifest=JSON.parse(readFileSync(require.resolve('monero-ts/package.json')));
+ assert.equal(moneroManifest.dependencies['serialize-javascript'],undefined);
+ assert.equal(moneroManifest.dependencies.uuid,undefined);
+ console.log('Installed package verified all '+vectors.length+' fixtures without an SDK dependency.');
  `,
 	);
 	execFileSync(process.execPath, ['verify.mjs'], {

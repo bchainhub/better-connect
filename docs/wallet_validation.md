@@ -2,7 +2,7 @@
 
 `validateWalletAccount({namespace, reference, address})` returns a safe `status`: `valid`, `invalid`, or `unsupported`. `isValidWalletAccount` returns true only for `valid`. Dart uses the existing `WalletIdentity` and `WalletValidationStatus` enum. The helpers never rewrite the account identity or expose upstream exception messages.
 
-The integrations pin `blockchain-wallet-validator` 1.2.1 and `flutter_wallet_validator` 0.1.4. Explicit namespace/reference mapping prevents automatic network detection or ENS/domain acceptance. Address validity does not prove ownership, account availability, selected network, or transaction safety. Existing signature verification and host approval remain required.
+The integrations use `blockchain-wallet-validator` pinned to 1.2.1 and `flutter_wallet_validator` with the compatible constraint `^0.1.4`. Explicit namespace/reference mapping prevents automatic network detection or ENS/domain acceptance. Address validity does not prove ownership, account availability, selected network, or transaction safety. Existing signature verification and host approval remain required.
 
 ## Operation adapters
 
@@ -44,4 +44,4 @@ The TypeScript package's generic result is insufficient for every supported form
 
 The server applies these checks automatically in `ConnectEngine.approve`, after envelope/profile compatibility checks and before profile verification. Known-invalid accounts return `unsupportedAccount` and leave the request pending. Unsupported chains continue through the configured signing profile's validator and cryptographic proof verification. A valid address never bypasses proof verification.
 
-better-connect exports the same `validateWalletAccount` and `isValidWalletAccount` helpers. Its adapter source and fixtures mirror connect.js while its existing immutable connect-protocol SDK pin remains unchanged; it does not depend on unpublished workspace code.
+better-connect exports the same `validateWalletAccount` and `isValidWalletAccount` helpers. Its adapter source and fixtures mirror connect.js and it maintains its own protocol and verification code; it has no SDK dependency or Git source pin.

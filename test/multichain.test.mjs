@@ -5,10 +5,9 @@ import {
 	chains,
 	requirementsFor,
 	canonicalMessage,
-	ConnectClient,
 	evmChain,
 	accountFor,
-} from 'connect-protocol';
+} from '../dist/protocol/index.js';
 import {
 	ConnectEngine,
 	MemoryRequestStore,
@@ -73,16 +72,8 @@ for (const chain of allChains) {
 		await assert.rejects(
 			engine.approve({ ...proof, publicKey: '00'.repeat(32) }),
 		);
-		const client = new ConnectClient(
-			{ getAccounts: async () => [alice] },
-			{
-				challenge: (t) => engine.challenge(t.requestId),
-				approve: (_, p) => engine.approve(p),
-			},
-		);
-		const request = await client.resolve(created.connectUri);
-		await request.approve(request.accounts[0]);
-		assert.equal(request.state, 'approved');
+		await engine.approve(proof);
+		assert.equal((await engine.status(created.requestId)).status, 'APPROVED');
 		await assert.rejects(engine.approve(proof));
 		assert.deepEqual(
 			await engine.redeem(created.requestId, created.redeemSecret),

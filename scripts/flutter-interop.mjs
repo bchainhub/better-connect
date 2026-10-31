@@ -5,7 +5,7 @@ import { betterAuth } from 'better-auth';
 import { getMigrations } from 'better-auth/db/migration';
 import { betterConnect } from '../dist/index.js';
 import { requirements as originalRequirements } from '../test/helpers.mjs';
-import { allChains, requirementsFor } from 'connect-protocol';
+import { allChains, requirementsFor } from '../dist/protocol/index.js';
 const requirements = [...requirementsFor(allChains), originalRequirements[1]];
 const database = new Database(':memory:');
 const options = {
@@ -106,7 +106,7 @@ try {
 	await runOffline(
 		process.execPath,
 		['--test', 'test/handoff.test.mjs'],
-		new URL('../../connect.js/', import.meta.url),
+		new URL('../', import.meta.url),
 	);
 } finally {
 	await rm(directory, { recursive: true, force: true });

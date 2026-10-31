@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.0
+
+- Refresh dependencies and maintain authentication schemas, canonical messages and verification profiles within this package.
+- Remove the connect-protocol dependency, Git source pinning, SDK vendoring and checkout requirements; retain fixture and live Flutter interoperability checks.
+- Retain the authentication-only plugin surface.
+
 ## 0.1.2
 
 - Publish npm when a GitHub Release is published in the app.
