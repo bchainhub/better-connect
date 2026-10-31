@@ -60,7 +60,7 @@ npm run test:package
 node scripts/flutter-interop.mjs ../flutter_connect
 ```
 
-The package has no connect-protocol dependency, Git source pin or sibling checkout requirement. Its patched Node Monero, BIP-322 and TRON dependencies are bundled. Shared fixtures and live Dart integration cover all seventeen proof variants. Dependency lockfiles are ignored. See [release setup](docs/release.md).
+The package has no connect-protocol dependency, Git source pin or sibling checkout requirement. Its Node Monero and compatible BIP-322 dependencies are bundled; TRON verification uses local TIP-191 framing with Ethers recovery. Shared fixtures and live Dart integration cover all seventeen proof variants. Dependency lockfiles are ignored. See [release setup](docs/release.md).
 
 Licensed under [CORE License](LICENSE).
 

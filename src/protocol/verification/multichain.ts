@@ -7,7 +7,7 @@ import { StrKey } from '@stellar/stellar-sdk';
 import * as ripple from 'ripple-keypairs';
 import { secp256k1 } from '@noble/curves/secp256k1.js';
 import { ripemd160 } from '@noble/hashes/legacy.js';
-import { Trx, TronWeb } from 'tronweb';
+import { concat, keccak256, recoverAddress, toUtf8Bytes } from 'ethers';
 import { decode, encode } from 'cborg';
 import {
 	ConnectError,
@@ -18,6 +18,7 @@ import {
 } from '../protocol.js';
 import type { SigningProfile } from './profiles.js';
 
+const check = base58check(sha256);
 const utf8 = (s: string) => new TextEncoder().encode(s);
 const message = (c: Challenge, p: Proof) => utf8(canonicalMessage(c, p));
 const equal = (a: Uint8Array | undefined, b: Uint8Array) =>
@@ -111,19 +112,42 @@ export const stellarProfile = defineSigningProfile({
 			{ zip215: false },
 		),
 });
+/** TIP-191 uses TRON's prefix, Keccak-256 and a Base58Check 0x41 address.
+ * Ethers supplies the same digest/recovery primitives used by TronWeb. */
 export const tronProfile = defineSigningProfile({
 	id: 'tron-signmessage-v2',
 	namespace: 'tron',
 	alg: null,
-	validateAccount: (a) =>
-		a.reference === chains.tron.reference &&
-		/^T[1-9A-HJ-NP-Za-km-z]{33}$(?![\s\S])/.test(a.address) &&
-		TronWeb.isAddress(a.address),
-	verify: (c, p) =>
-		p.publicKey === undefined &&
-		/^0x[0-9a-f]{130}$(?![\s\S])/.test(p.signature) &&
-		Trx.verifyMessageV2(message(c, p), p.signature) === p.account.address,
+	validateAccount: (a) => {
+		if (
+			a.reference !== chains.tron.reference ||
+			!/^T[1-9A-HJ-NP-Za-km-z]{33}$(?![\s\S])/.test(a.address)
+		)
+			return false;
+		const raw = check.decode(a.address);
+		return (
+			raw.length === 21 && raw[0] === 0x41 && check.encode(raw) === a.address
+		);
+	},
+	verify(c, p) {
+		if (
+			p.publicKey !== undefined ||
+			!/^0x[0-9a-f]{130}$(?![\s\S])/.test(p.signature)
+		)
+			return false;
+		const bytes = message(c, p);
+		const digest = keccak256(
+			concat([toUtf8Bytes(`\x19TRON Signed Message:\n${bytes.length}`), bytes]),
+		);
+		const recovered = recoverAddress(digest, p.signature);
+		return (
+			check.encode(
+				Uint8Array.from([0x41, ...hex(recovered.slice(2).toLowerCase(), 20)]),
+			) === p.account.address
+		);
+	},
 });
+
 function validXrp(address: string): boolean {
 	const raw = base58xrp.decode(address);
 	return (
@@ -158,7 +182,6 @@ function xrpProfile(ed: boolean): SigningProfile {
 }
 export const rippleProfile = xrpProfile(false);
 export const rippleEd25519Profile = xrpProfile(true);
-const check = base58check(sha256);
 /** Standard recoverable signmessage for P2PKH. Prefix and address version are pinned.
  * CompactSize-prefixed message hashing and noble secp256k1 recovery support
  * both one-byte and two-byte address versions. */

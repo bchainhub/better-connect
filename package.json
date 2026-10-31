@@ -6,7 +6,7 @@
 	"license": "SEE LICENSE IN LICENSE",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/bchainhub/better-connect.git"
+		"url": "git+https://github.com/bchainhub/better-connect.git"
 	},
 	"files": [
 		"dist",
@@ -50,7 +50,8 @@
 		"prettier": "^3.9.10",
 		"typescript": "npm:@typescript/typescript6@^6.0.2",
 		"typescript-eslint": "^8.72.1",
-		"@typescript/native": "npm:typescript@^7.0.2"
+		"@typescript/native": "npm:typescript@^7.0.2",
+		"tronweb": "^6.5.1"
 	},
 	"dependencies": {
 		"@better-fetch/fetch": "^1.3.3",
@@ -62,10 +63,11 @@
 		"bip322-js": "^4.0.0",
 		"@stellar/stellar-sdk": "^17.4.0",
 		"ripple-keypairs": "^3.1.0",
-		"tronweb": "^6.5.1",
 		"cborg": "^6.2.1",
 		"viem": "^2.57.13",
-		"@noble/curves": "^2.4.0"
+		"@noble/curves": "^2.4.0",
+		"bitcoinjs-lib": "7.0.1",
+		"ethers": "^6.17.0"
 	},
 	"peerDependencies": {
 		"better-auth": "^1.7.14"
@@ -73,20 +75,11 @@
 	"bundleDependencies": [
 		"monero-ts",
 		"bip322-js",
-		"tronweb"
+		"bitcoinjs-lib"
 	],
 	"overrides": {
 		"minimatch": "^11.0.3",
-		"bip322-js": {
-			"bitcoinjs-lib": "7.0.1"
-		},
-		"follow-redirects": "^1.16.2",
-		"ip-address": "^10.7.5",
-		"smol-toml": "^1.9.1",
 		"tronweb": {
-			"axios": "1.21.0"
-		},
-		"@stellar/stellar-sdk": {
 			"axios": "1.21.0"
 		}
 	}

@@ -25,9 +25,23 @@ try {
 		await readFile(new URL('../package.json', import.meta.url), 'utf8'),
 	);
 	assertStandalone(manifest);
-	const [packed] = JSON.parse(
+	run([
+		'publish',
+		'--dry-run',
+		'--ignore-scripts',
+		'--access',
+		'public',
+		'--json',
+	]);
+	console.log('npm publish dry-run passed.');
+	const packResult = JSON.parse(
 		run(['pack', '--json', '--pack-destination', directory]),
 	);
+	// npm 11 returns an array; npm 12 keys package results by name.
+	const packed = Array.isArray(packResult)
+		? packResult[0]
+		: packResult[manifest.name];
+	if (!packed?.filename) throw Error('npm pack returned no archive filename.');
 	await writeFile(
 		join(directory, 'package.json'),
 		JSON.stringify({ private: true, type: 'module' }),
